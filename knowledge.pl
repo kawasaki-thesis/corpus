@@ -71,11 +71,14 @@ foreach (@corpus){
 
 #コーパスを標準出力
 foreach (@corpus){
-	#print "INSERT INTO heritage_corpus VALUES("
-	print join(", ", @{$_});
-	#print ");";
-	print "\n";
+	$filename = "knowledge.sql";
+	open(DATAFILE, "+>>", $filename) or die("Error:$!");
+	print DATAFILE "INSERT INTO heritage_corpus VALUES(";
+	print DATAFILE join(", ", @{$_});
+	print DATAFILE ");";
+	print DATAFILE "\n";
 	#jをカンマで横に並べてi行表示
+	close(DATAFILE);
 }
 
 #end
