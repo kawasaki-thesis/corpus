@@ -64,6 +64,10 @@ for my $key (sort {$hash{$b} <=> $hash{$a} || $a cmp $b} keys %hash) {
 print "shape data...\n";
 #評価値を正規化
 foreach (@corpus){
+	#sql用にクオーテーションをエスケープ
+	if (@{$_}[0] =~ /\'/){
+		@{$_}[0] =~ s/\'/\'\'/g;
+	}
 	@{$_}[0]='\'' . @{$_}[0] . '\'';
 	$sum=0;
 	for($i=0; $i<10; $i++) {$sum+=@{$_}[$i+1];}
@@ -75,7 +79,7 @@ foreach (@corpus){
 	$filename = "knowledge.sql";
 	open(DATAFILE, "+>>", $filename) or die("Error:$!");
 	print DATAFILE "INSERT INTO heritage_corpus VALUES(";
-	print DATAFILE join(", ", @{$_});
+	print DATAFILE encode('UTF-8', join(", ", @{$_}));
 	print DATAFILE ");";
 	print DATAFILE "\n";
 	#jをカンマで横に並べてi行表示
